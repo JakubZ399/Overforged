@@ -1,6 +1,7 @@
 #include "PlayerCharacter.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "TimerManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 APlayerCharacter::APlayerCharacter()
@@ -37,6 +38,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(InputMove, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
+		EnhancedInputComponent->BindAction(InputDash, ETriggerEvent::Triggered, this, &APlayerCharacter::Dash);
 	}
 }
 
@@ -52,6 +54,26 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 
 	AddMovementInput(ForwardVector, MovementVector.Y);
 	AddMovementInput(RightVector, MovementVector.X);
+}
+
+void APlayerCharacter::Dash()
+{
+	if (!isDashing)
+	{
+		isDashing = true;
+
+		FVector PlayerVelocity = GetVelocity() * DashDistance;
+		FVector PlayerVelocityXY(PlayerVelocity.X, PlayerVelocity.Y, 0.f);
+
+		LaunchCharacter(PlayerVelocityXY, false, false);
+
+		GetWorld()->GetTimerManager().SetTimer(DashTimerHandle, this, &APlayerCharacter::StopDashing, 1.f, false);
+	}
+}
+
+void APlayerCharacter::StopDashing()
+{
+	isDashing = false;
 }
 
 

@@ -26,13 +26,23 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputMappingContext* InputMappingContext;
+	
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputAction* InputMove;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* InputDash;
 	
 	void Move(const FInputActionValue& Value);
+	void Dash();
 
 private:
-	
 
-	
+
+	//Dash
+	UPROPERTY(EditInstanceOnly, Category = "Movement")
+	float DashDistance = 2.f;
+	bool isDashing = false;
+	FTimerHandle DashTimerHandle;
+	void StopDashing();
 };
