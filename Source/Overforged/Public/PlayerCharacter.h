@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "InputActionValue.h"
 #include "PlayerCharacter.generated.h"
 
 class UInputMappingContext;
@@ -26,8 +27,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputMappingContext* InputMappingContext;
 	UPROPERTY(EditAnywhere, Category = "Input")
-	UInputAction* InputAction;
-
+	UInputAction* InputMove;
+	
+	void Move(const FInputActionValue& Value);
 
 private:
 	
