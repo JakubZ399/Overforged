@@ -2,6 +2,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "TimerManager.h"
+#include "Blueprint/UserWidget.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 APlayerCharacter::APlayerCharacter()
@@ -39,6 +40,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	{
 		EnhancedInputComponent->BindAction(InputMove, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
 		EnhancedInputComponent->BindAction(InputDash, ETriggerEvent::Triggered, this, &APlayerCharacter::Dash);
+		EnhancedInputComponent->BindAction(InputPauseMenu, ETriggerEvent::Triggered, this, &APlayerCharacter::OpenPauseMenu);
 	}
 }
 
@@ -76,4 +78,12 @@ void APlayerCharacter::StopDashing()
 	isDashing = false;
 }
 
+void APlayerCharacter::OpenPauseMenu()
+{
+	UUserWidget* PauseMenu = CreateWidget(GetWorld(), PauseMenuWidget);
 
+	if (PauseMenu)
+	{
+		PauseMenu->AddToViewport();
+	}
+}

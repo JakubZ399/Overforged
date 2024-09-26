@@ -24,6 +24,7 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	//EnhancedInput
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputMappingContext* InputMappingContext;
 	
@@ -32,17 +33,28 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputAction* InputDash;
-	
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* InputPauseMenu;
+
+	//Movement
 	void Move(const FInputActionValue& Value);
 	void Dash();
+
+	//
+	void OpenPauseMenu();
 
 private:
 
 
 	//Dash
-	UPROPERTY(EditInstanceOnly, Category = "Movement")
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
 	float DashDistance = 2.f;
 	bool isDashing = false;
 	FTimerHandle DashTimerHandle;
 	void StopDashing();
+
+	//
+	UPROPERTY(EditDefaultsOnly, Category = "Menu")
+	TSubclassOf<UUserWidget> PauseMenuWidget;
 };
